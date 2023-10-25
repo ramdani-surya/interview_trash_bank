@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\TrashTypeController;
 use App\Http\Controllers\Client\TransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,4 +28,8 @@ Route::prefix('/transaction')->name('transaction.')->group(function () {
 Route::prefix('/auth')->name('auth.')->group(function () {
     Route::get('login', [AuthController::class, 'login'])->name('login');
     Route::post('authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::resource('trash-type', TrashTypeController::class);
 });

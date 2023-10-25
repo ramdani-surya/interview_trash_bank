@@ -20,7 +20,7 @@ class AuthController extends Controller
         if (auth()->attempt($validated)) {
             $request->session()->regenerate();
 
-            return redirect()->route('transaction.index')
+            return redirect()->route('trash-type.index')
                 ->with('success', 'Welcome, ' . auth()->user()->name . '!');
         }
 
