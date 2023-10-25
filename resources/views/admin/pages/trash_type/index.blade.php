@@ -7,16 +7,22 @@
     href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
 <link rel="stylesheet"
     href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+<link rel="stylesheet"
+    href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
 @endsection
 
 
 @section('content')
-<!-- Default box -->
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Trash Type</h3>
+        <h3 class="card-title">{{ "$pageTitle List" }}</h3>
     </div>
+
     <div class="card-body">
+        <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#modal-add">
+            Add New
+        </button>
+
         <table id="myDatatable" class="table table-bordered table-hover">
             <thead>
                 <tr>
@@ -44,7 +50,9 @@
     </div>
     <!-- /.card-body -->
 </div>
-<!-- /.card -->
+
+@include('admin.pages.trash_type.components.modal-add', ['pageTitle' => $pageTitle])
+
 @endsection
 
 
@@ -56,6 +64,8 @@
 </script>
 <script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}">
 </script>
+
+<script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 
 <script>
     $(function () {
@@ -71,4 +81,28 @@
     });
 
 </script>
+
+@if(session('success') || session('error'))
+    @php
+        $sessionType = session('success') ? 'success' : 'error';
+        $sessionMessage = session('success') ?? session('error');
+    @endphp
+
+    <script>
+        $(function () {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+
+            Toast.fire({
+                icon: '{{ $sessionType }}',
+                title: '{{ $sessionMessage }}'
+            })
+        });
+    </script>
+@endif
+
 @endsection
