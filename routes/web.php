@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Client\TransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,4 +22,9 @@ Route::get('/', function () {
 Route::prefix('/transaction')->name('transaction.')->group(function () {
     Route::get('/', [TransactionController::class, 'index'])->name('index');
     Route::post('store', [TransactionController::class, 'store'])->name('store');
+});
+
+Route::prefix('/auth')->name('auth.')->group(function () {
+    Route::get('login', [AuthController::class, 'login'])->name('login');
+    Route::post('authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
 });
