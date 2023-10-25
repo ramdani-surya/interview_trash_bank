@@ -42,7 +42,16 @@
                         <td>{{ $type->type_name }}</td>
                         <td>{{ $type->description }}</td>
                         <td>{{ currencyFormat($type->price_kg) . ' /kg' }}</td>
-                        <td></td>
+                        <td>
+                            <button type="button" class="btn btn-warning btn-sm btn-edit" data-toggle="modal"
+                                data-target="#modal-edit"
+                                data-url="{{ route('trash_type.update', $type->id) }}"
+                                data-name="{{ $type->type_name }}"
+                                data-price="{{ $type->price_kg }}"
+                                data-description="{{ $type->description }}"
+                                ><i class="fas fa-edit"></i>
+                            </button>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -52,6 +61,7 @@
 </div>
 
 @include('admin.pages.trash_type.components.modal-add', ['pageTitle' => $pageTitle])
+@include('admin.pages.trash_type.components.modal-edit', ['pageTitle' => $pageTitle])
 
 @endsection
 

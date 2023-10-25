@@ -31,5 +31,6 @@ Route::prefix('/auth')->name('auth.')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::resource('trash-type', TrashTypeController::class);
+    Route::resource('trash-type', TrashTypeController::class)->except('create', 'show', 'edit', 'update');
+    Route::put('trash-types/{trashType}/update', [TrashTypeController::class, 'update'])->name('trash_type.update');
 });

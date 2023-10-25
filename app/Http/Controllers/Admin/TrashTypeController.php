@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTrashTypeRequest;
+use App\Http\Requests\UpdateTrashTypeRequest;
 use App\Models\TrashType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class TrashTypeController extends Controller
 {
@@ -21,14 +23,6 @@ class TrashTypeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreTrashTypeRequest $request)
@@ -40,38 +34,38 @@ class TrashTypeController extends Controller
             $fileLocation = $image->move('uploads', $fileName);
         }
 
-        $trashTypes = new TrashType;
-        $trashTypes->type_name = $validated['type_name'];
-        $trashTypes->price_kg = $validated['price'];
-        $trashTypes->description = $validated['description'];
-        $trashTypes->image = $fileLocation ?? null;
-        $trashTypes->save();
+        $trashType = new TrashType;
+        $trashType->type_name = $validated['type_name'];
+        $trashType->price_kg = $validated['price'];
+        $trashType->description = $validated['description'];
+        $trashType->image = $fileLocation ?? null;
+        $trashType->save();
 
         return redirect()->route('trash-type.index')->with('success', 'New Trash Type Created.');
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateTrashTypeRequest $request, TrashType $trashType)
     {
-        //
+        $validated = $request->validated();
+
+        if ($image = $request->file('image')) {
+            $fileName     = encrypt($image->getClientOriginalName()) . '.' . $image->getClientOriginalExtension();
+            $fileLocation = $image->move('uploads', $fileName);
+
+            // delete old image
+            File::delete($trashType->image);
+        }
+
+        $trashType->type_name = $validated['type_name'];
+        $trashType->price_kg = $validated['price'];
+        $trashType->description = $validated['description'];
+        $trashType->image = $fileLocation ?? $trashType->image;
+        $trashType->save();
+
+        return redirect()->route('trash-type.index')->with('success', 'Trash Type Updated.');
     }
 
     /**
