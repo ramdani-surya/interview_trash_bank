@@ -71,8 +71,11 @@ class TrashTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(TrashType $trashType)
     {
-        //
+        File::delete($trashType->image);
+        $trashType->delete();
+
+        return redirect()->route('trash-type.index')->with('success', 'Trash Type Deleted.');
     }
 }

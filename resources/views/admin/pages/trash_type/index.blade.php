@@ -46,11 +46,13 @@
                             <button type="button" class="btn btn-warning btn-sm btn-edit" data-toggle="modal"
                                 data-target="#modal-edit"
                                 data-url="{{ route('trash_type.update', $type->id) }}"
-                                data-name="{{ $type->type_name }}"
-                                data-price="{{ $type->price_kg }}"
-                                data-description="{{ $type->description }}"
-                                ><i class="fas fa-edit"></i>
+                                data-name="{{ $type->type_name }}" data-price="{{ $type->price_kg }}"
+                                data-description="{{ $type->description }}"><i class="fas fa-edit"></i>
                             </button>
+
+                            <button type="button" class="btn btn-danger btn-sm btn-delete"
+                                data-url="{{ route('trash_type.destroy', $type->id) }}">
+                                <i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
                 @endforeach
@@ -60,8 +62,8 @@
     <!-- /.card-body -->
 </div>
 
-@include('admin.pages.trash_type.components.modal-add', ['pageTitle' => $pageTitle])
-@include('admin.pages.trash_type.components.modal-edit', ['pageTitle' => $pageTitle])
+@include('admin.pages.trash_type.components.modal-add')
+@include('admin.pages.trash_type.components.modal-edit')
 
 @endsection
 
@@ -88,6 +90,12 @@
             "autoWidth": false,
             "responsive": true,
         });
+
+        $('.btn-delete').click(function (e) {
+            if (confirm("Are You sure to delete this data?")) {
+                window.location.href = $(this).data('url');
+            }
+        });
     });
 
 </script>
@@ -112,6 +120,7 @@
                 title: '{{ $sessionMessage }}'
             })
         });
+
     </script>
 @endif
 
