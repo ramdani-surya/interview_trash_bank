@@ -57,7 +57,7 @@
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="info">
                         <a href="#">Hi, {{ auth()->user()->name }}!</a>
-                        <a href="#">
+                        <a href="#" id="logout">
                             <i class="fas fa-sign-out-alt"></i>
                         </a>
                     </div>
@@ -124,6 +124,17 @@
     <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('assets/js/adminlte.min.js') }}"></script>
+
+    <script>
+        $(function () {
+            $('#logout').click(function (e) {
+                if (confirm("Logout now?")) {
+                    window.location.href = "{{ route('auth.logout') }}";
+                }
+            });
+        });
+
+    </script>
 
     @yield('script')
 </body>

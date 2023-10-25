@@ -31,6 +31,8 @@ Route::prefix('/auth')->name('auth.')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
+
     Route::resource('trash-type', TrashTypeController::class)->only('index', 'store');
     Route::put('trash-types/{trashType}/update', [TrashTypeController::class, 'update'])->name('trash_type.update');
     Route::get('trash-types/{trashType}/destroy', [TrashTypeController::class, 'destroy'])->name('trash_type.destroy');
